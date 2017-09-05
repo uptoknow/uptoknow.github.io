@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>UPTOKNOW</title>
+    <link>https://uptoknow.github.io/</link>
+    <description>Recent content on UPTOKNOW</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Jul 2017 09:32:45 -0400</lastBuildDate>
+    
+	<atom:link href="https://uptoknow.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About Me</title>
+      <link>https://uptoknow.github.io/about/</link>
+      <pubDate>Fri, 28 Jul 2017 09:32:45 -0400</pubDate>
+      
+      <guid>https://uptoknow.github.io/about/</guid>
+      <description>程序员一枚，5年java开发经验，2年自动化测试经验，目前就职RedHat, 负责OpenShift feature 和自动化测试相关工作，对容器编排，PASS 比较感兴趣，K8S team member, 曾就职阿尔卡特朗讯，乐视网。</description>
+    </item>
+    
+    <item>
+      <title>Welcome to uptoknow!</title>
+      <link>https://uptoknow.github.io/post/welcome/</link>
+      <pubDate>Fri, 28 Jul 2017 09:32:45 -0400</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/welcome/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
