@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Request Handling in Go">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-09-11">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://uptoknow.github.io/post/request-handling-in-go/">
+    <meta property="og:site_name" content="UPTOKNOW">
+    
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
+    <meta name="generator" content="Hugo 0.26" />
+    <title>Request Handling in Go &middot; UPTOKNOW</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://uptoknow.github.io/css/style.css">
+    
+    <link href="https://uptoknow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="UPTOKNOW" />
+    
+    
+    <link rel="icon" href="https://uptoknow.github.io/favicon.ico" />
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://uptoknow.github.io/">UPTOKNOW</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://uptoknow.github.io/about">About</a></li>
+				
+					<li><a href="https://uptoknow.github.io/">Blog</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://uptoknow.github.io/">UPTOKNOW</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Haoran Wang BLOG</small>
+		
+		
+		
+			<img id="profile-pic" src="https://uptoknow.github.io//img/haowang_profile.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/wanghaoran1988"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/wanghaoran88"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://linkedin.com/haoranwang"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+
+			<a href="mailto:uptoknow@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://uptoknow.github.io/about">About</a>
+			
+				<a href="https://uptoknow.github.io/">Blog</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Request Handling in Go</h1>
+	</header>
+
+	<article>
+		
+
+<h3 id="http-handlers">Http handlers</h3>
+
+<p>Processing HTTP requests with Go is primarily about two things: ServeMuxes and Handlers.</p>
+
+<p>A ServeMux is essentially a HTTP request router (or multiplexor). It compares incoming requests against a list of predefined URL paths, and calls the associated handler for the path whenever a match is found.</p>
+
+<p>Handlers are responsible for writing response headers and bodies. Almost any object can be a handler, so long as it satisfies the http.Handler interface. In lay terms, that simply means it must have a ServeHTTP method with the following signature:</p>
+
+<pre><code>ServeHTTP(http.ResponseWriter, *http.Request)
+</code></pre>
+
+<p>Go&rsquo;s HTTP package ships with a few functions to generate common handlers, such as FileServer, NotFoundHandler and RedirectHandler. Let&rsquo;s begin with a simple but contrived example:</p>
+
+<pre><code class="language-bash">$ mkdir handler-example
+$ cd handler-example
+$ touch main.go
+</code></pre>
+
+<p>Let&rsquo;s step through this quickly:</p>
+
+<ol>
+<li>In the main function we use the http.NewServeMux function to create an empty ServeMux.</li>
+<li>We then use the http.RedirectHandler function to create a new handler. This handler 307 redirects all requests it receives to <a href="http://example.org">http://example.org</a>.</li>
+<li>Next we use the ServeMux.Handle function to register this with our new ServeMux, so it acts as the handler for all incoming requests with the URL path /foo.</li>
+<li>Finally we create a new server and start listening for incoming requests with the http.ListenAndServe function, passing in our ServeMux for it to match requests against.</li>
+</ol>
+
+<p>Go ahead and run the application:</p>
+
+<pre><code>$ go run main.go
+Listening...
+</code></pre>
+
+<p>And visit <a href="http://localhost:3000/foo">http://localhost:3000/foo</a> in your browser. You should find that your request gets successfully redirected.</p>
+
+<p>The eagle-eyed of you might have noticed something interesting: The signature for the ListenAndServe function is ListenAndServe(addr string, handler Handler), but we passed a ServeMux as the second parameter.</p>
+
+<p>We were able to do this because ServeMux also has a ServeHTTP method, meaning that it too satisfies the Handler interface.</p>
+
+<p>For me it simplifies things to think of a ServeMux as just being a special kind of handler, which instead of providing a response itself passes the request on to a second handler. This isn&rsquo;t as much of a leap as it first sounds ? chaining handlers together is fairly commonplace in Go.</p>
+
+<hr />
+
+<h3 id="custom-handlers">Custom Handlers</h3>
+
+<p>Let&rsquo;s create a custom handler which responds with the current local time in a given format:</p>
+
+<pre><code>type timeHandler struct {
+  format string
+}
+
+func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(th.format)
+  w.Write([]byte(&quot;The time is: &quot; + tm))
+}
+</code></pre>
+
+<p>The exact code here isn&rsquo;t too important.</p>
+
+<p>All that really matters is that we have an object (in this case it&rsquo;s a timeHandler struct, but it could equally be a string or function or anything else), and we&rsquo;ve implemented a method with the signature ServeHTTP(http.ResponseWriter, *http.Request) on it. That&rsquo;s all we need to make a handler.</p>
+
+<p>Let&rsquo;s embed this in a concrete example:</p>
+
+<pre><code>File: main.go
+package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
+  &quot;time&quot;
+)
+
+type timeHandler struct {
+  format string
+}
+
+func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(th.format)
+  w.Write([]byte(&quot;The time is: &quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := &amp;timeHandler{format: time.RFC1123}
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>In the main function we initialised the timeHandler in exactly the same way we would any normal struct, using the &amp; symbol to yield a pointer. And then, like the previous example, we use the mux.Handle function to register this with our ServeMux.</p>
+
+<p>Now when we run the application, the ServeMux will pass any request for /time straight on to our timeHandler.ServeHTTP method.</p>
+
+<p>Go ahead and give it a try: <a href="http://localhost:3000/time">http://localhost:3000/time</a>.</p>
+
+<p>Notice too that we could easily reuse the timeHandler in multiple routes:</p>
+
+<pre><code>func main() {
+  mux := http.NewServeMux()
+
+  th1123 := &amp;timeHandler{format: time.RFC1123}
+  mux.Handle(&quot;/time/rfc1123&quot;, th1123)
+
+  th3339 := &amp;timeHandler{format: time.RFC3339}
+  mux.Handle(&quot;/time/rfc3339&quot;, th3339)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<hr />
+
+<h3 id="funcions-as-handlers">Funcions as Handlers</h3>
+
+<p>For simple cases (like the example above) defining new custom types and ServeHTTP methods feels a bit verbose. Let&rsquo;s look at an alternative approach, where we leverage Go&rsquo;s http.HandlerFunc type to coerce a normal function into satisfying the Handler interface.</p>
+
+<p>Any function which has the signature func(http.ResponseWriter, *http.Request) can be converted into a HandlerFunc type. This is useful because HandleFunc objects come with an inbuilt ServeHTTP method which ? rather cleverly and conveniently ? executes the content of the original function.</p>
+
+<p>If that sounds confusing, try taking a look at the relevant source code. You&rsquo;ll see that it&rsquo;s a very succinct way of making a function satisfy the Handler interface.</p>
+
+<p>Let&rsquo;s reproduce the timeHandler application using this technique:</p>
+
+<pre><code>File: main.go
+package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
+  &quot;time&quot;
+)
+
+func timeHandler(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(time.RFC1123)
+  w.Write([]byte(&quot;The time is: &quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  // Convert the timeHandler function to a HandlerFunc type
+  th := http.HandlerFunc(timeHandler)
+  // And add it to the ServeMux
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>In fact, converting a function to a HandlerFunc type and then adding it to a ServeMux like this is so common that Go provides a shortcut: the ServeMux.HandleFunc method.</p>
+
+<p>This is what the main() function would have looked like if we&rsquo;d used this shortcut instead:</p>
+
+<pre><code>func main() {
+  mux := http.NewServeMux()
+
+  mux.HandleFunc(&quot;/time&quot;, timeHandler)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>Most of the time using a function as a handler like this works well. But there is a bit of a limitation when things start getting more complex.</p>
+
+<p>You&rsquo;ve probably noticed that, unlike the method before, we&rsquo;ve had to hardcode the time format in the timeHandler function. What happens when we want to pass information or variables from main() to a handler?</p>
+
+<p>A neat approach is to put our handler logic into a closure, and close over the variables we want to use:</p>
+
+<pre><code>File: main.go
+package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
+  &quot;time&quot;
+)
+
+func timeHandler(format string) http.Handler {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  }
+  return http.HandlerFunc(fn)
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := timeHandler(time.RFC1123)
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>The timeHandler function now has a subtly different role. Instead of coercing the function into a handler (like we did previously), we are now using it to return a handler. There&rsquo;s two key elements to making this work.</p>
+
+<p>First it creates fn, an anonymous function which accesses ? or closes over ? the format variable forming a closure. Regardless of what we do with the closure it will always be able to access the variables that are local to the scope it was created in ? which in this case means it&rsquo;ll always have access to the format variable.</p>
+
+<p>Secondly our closure has the signature func(http.ResponseWriter, *http.Request). As you may remember from earlier, this means that we can convert it into a HandlerFunc type (so that it satisfies the Handler interface). Our timeHandler function then returns this converted closure.</p>
+
+<p>In this example we&rsquo;ve just been passing a simple string to a handler. But in a real-world application you could use this method to pass database connection, template map, or any other application-level context. It&rsquo;s a good alternative to using global variables, and has the added benefit of making neat self-contained handlers for testing.</p>
+
+<p>You might also see this same pattern written as:</p>
+
+<pre><code>func timeHandler(format string) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  })
+}
+</code></pre>
+
+<p>Or using an implicit conversion to the HandlerFunc type on return:</p>
+
+<pre><code>func timeHandler(format string) http.HandlerFunc {
+  return func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  }
+}
+</code></pre>
+
+<hr />
+
+<h3 id="the-defaultservemux">The DefaultServeMux</h3>
+
+<p>You&rsquo;ve probably seen DefaultServeMux mentioned in lots of places, from the simplest Hello World examples to the Go source code.</p>
+
+<p>It took me a long time to realise it isn&rsquo;t anything special. The DefaultServeMux is just a plain ol&rsquo; ServeMux like we&rsquo;ve already been using, which gets instantiated by default when the HTTP package is used. Here&rsquo;s the relevant line from the Go source:</p>
+
+<p>var DefaultServeMux = NewServeMux()</p>
+
+<p>The HTTP package provides a couple of shortcuts for working with the DefaultServeMux: http.Handle and http.HandleFunc. These do exactly the same as their namesake functions we&rsquo;ve already looked at, with the difference that they add handlers to the DefaultServeMux instead of one that you&rsquo;ve created.</p>
+
+<p>Additionally, ListenAndServe will fall back to using the DefaultServeMux if no other handler is provided (that is, the second parameter is set to nil).</p>
+
+<p>So as a final step, let&rsquo;s update our timeHandler application to use the DefaultServeMux instead:</p>
+
+<pre><code>File: main.go
+package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
+  &quot;time&quot;
+)
+
+func timeHandler(format string) http.Handler {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  }
+  return http.HandlerFunc(fn)
+}
+
+func main() {
+  // Note that we skip creating the ServeMux...
+
+  var format string = time.RFC1123
+  th := timeHandler(format)
+
+  // We use http.Handle instead of mux.Handle...
+  http.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  // And pass nil as the handler to ListenAndServe.
+  http.ListenAndServe(&quot;:3000&quot;, nil)
+}
+</code></pre>
+
+<hr />
+
+<h3 id="build-a-handler-chain">Build a handler chain</h3>
+
+<p>Sometimes we need build an handler chain to handle a request, like authentication, authorization, panic handle, .etc. So we can use the handler to build a chain like this:</p>
+
+<pre><code>
+package main
+
+import (
+    &quot;log&quot;
+    &quot;net/http&quot;
+)
+
+type genericHandler struct {
+}
+
+func (handler *genericHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte(&quot;This is doing generic things.\n&quot;))
+}
+
+func withAuthenticationhandler(handler http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+        w.Write([]byte(&quot;This is doing authentication.\n&quot;))
+        handler.ServeHTTP(w, req)
+    })
+}
+func withAuthorizationHandler(handler http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+        w.Write([]byte(&quot;This is doing authorization.\n&quot;))
+        handler.ServeHTTP(w, req)
+    })
+}
+
+func main() {
+    mux := http.NewServeMux()
+    var handler http.Handler
+
+    handler = &amp;genericHandler{}
+    handler = withAuthorizationHandler(handler)
+    handler = withAuthenticationhandler(handler)
+    mux.Handle(&quot;/&quot;, handler)
+
+    log.Println(&quot;Listening...&quot;)
+    http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p><em>Note:</em> The last one registered handler will serve first, that means the serve order will be: authentication handler, authorization handler, generic handler,let&rsquo;s run:</p>
+
+<pre><code>$go build main.go
+$./main
+$curl http://localhost:3000
+
+This is doing authentication.
+This is doing authorization.
+This is doing generic things.
+</code></pre>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'code-here', 'auto');
+    ga('send', 'pageview');
+    window.baseURL = "https:\/\/uptoknow.github.io\/";
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  
+  
+  <script src="https://uptoknow.github.io//js/App.js"></script>
+  
+</body>
+</html>
