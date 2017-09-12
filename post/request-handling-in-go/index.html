@@ -127,6 +127,25 @@ $ cd handler-example
 $ touch main.go
 </code></pre>
 
+<pre><code>File: main.go
+package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
+)
+
+func main() {
+  mux := http.NewServeMux()
+
+  rh := http.RedirectHandler(&quot;http://example.org&quot;, 307)
+  mux.Handle(&quot;/foo&quot;, rh)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
 <p>Let&rsquo;s step through this quickly:</p>
 
 <ol>
