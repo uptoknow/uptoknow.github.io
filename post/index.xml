@@ -6,10 +6,21 @@
     <description>Recent content in Posts on UPTOKNOW</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Sep 2017 18:40:18 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 14 Sep 2017 18:28:15 +0800</lastBuildDate>
     
 	<atom:link href="https://uptoknow.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Openshift Keycloak Openid</title>
+      <link>https://uptoknow.github.io/post/openshift-keycloak-openid/</link>
+      <pubDate>Thu, 14 Sep 2017 18:28:15 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/openshift-keycloak-openid/</guid>
+      <description>Keycloak is an powerful tools that can be used as openid provider and SAML auth provider, and here I will record how to integrate openshift with keycloak.
+First, download the keycloak from here
+Then, you neec setup the keycloak with https enabled, as openshift ask the openid provider to support https, see the openid spec here We will setup a standalone cluster and update the binding address, and we need generate the keystore for serve the https the standalone config file is at: standalone/configuration/standalone.</description>
+    </item>
     
     <item>
       <title>Request Handling in Go</title>
