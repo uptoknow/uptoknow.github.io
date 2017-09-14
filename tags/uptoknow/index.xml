@@ -23,6 +23,16 @@ Handlers are responsible for writing response headers and bodies. Almost any obj
     </item>
     
     <item>
+      <title>K8s Auth Proxy Example</title>
+      <link>https://uptoknow.github.io/post/k8s-auth-proxy-example/</link>
+      <pubDate>Sat, 12 Aug 2017 11:23:48 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/k8s-auth-proxy-example/</guid>
+      <description>K8S support different kind of auth type, one of it’s auth type is Authenticating Proxy, this allow user to use it’s auth provider to do the authentication, after pass the auth, sent the use related info(username, group, extra info) using http request headers to k8s api server, the headers can be defined using:
+--requestheader-username-headers --requestheader-group-headers --requestheader-extra-headers-prefix  New people to this area are not very familiar how to setup a auth proxy and integrated with k8s, so I wish this blog can help you guys.</description>
+    </item>
+    
+    <item>
       <title>Welcome to uptoknow!</title>
       <link>https://uptoknow.github.io/post/welcome/</link>
       <pubDate>Fri, 28 Jul 2017 09:32:45 -0400</pubDate>
