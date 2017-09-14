@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Openshift Keycloak Openid">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-09-14">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://uptoknow.github.io/post/openshift-with-keycloak-openid/">
+    <meta property="og:site_name" content="UPTOKNOW">
+    
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
+    <meta property="og:tags" content="openshift">
+    
+    <meta property="og:tags" content="keycloak">
+    
+    <meta name="generator" content="Hugo 0.26" />
+    <title>Openshift Keycloak Openid &middot; UPTOKNOW</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://uptoknow.github.io/css/style.css">
+    
+    <link href="https://uptoknow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="UPTOKNOW" />
+    
+    
+    <link rel="icon" href="https://uptoknow.github.io/favicon.ico" />
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://uptoknow.github.io/">UPTOKNOW</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://uptoknow.github.io/about">About</a></li>
+				
+					<li><a href="https://uptoknow.github.io/">Blog</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://uptoknow.github.io/">UPTOKNOW</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Haoran Wang BLOG</small>
+		
+		
+		
+			<img id="profile-pic" src="https://uptoknow.github.io//img/haowang_profile.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/wanghaoran1988"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/wanghaoran88"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://linkedin.com/haoranwang"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+
+			<a href="mailto:smarterhaoran@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://uptoknow.github.io/about">About</a>
+			
+				<a href="https://uptoknow.github.io/">Blog</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Openshift Keycloak Openid</h1>
+	</header>
+
+	<article>
+		<p>Keycloak is an powerful tools that can be used as openid provider and SAML auth provider, and here I will record how to integrate openshift with keycloak.</p>
+
+<p>First, download the keycloak from <a href="https://mojo.redhat.com/external-link.jspa?url=http%3A%2F%2Fwww.keycloak.org%2Fdownloads.html">here</a></p>
+
+<p>Then, you neec setup the keycloak with https enabled, as openshift ask the openid provider to support https, see the openid spec <a href="http://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint">here</a>
+   We will setup a standalone cluster and update the binding address, and we need generate the keystore for serve the https
+the standalone config file is at: standalone/configuration/standalone.xml.</p>
+
+<ul>
+<li>You need update the binding address to your host:</li>
+</ul>
+
+<pre><code>&lt;interfaces&gt;
+  &lt;interface name=&quot;management&quot;&gt;
+    &lt;inet-address value=&quot;${jboss.bind.address.management:10.66.140.184}&quot;/&gt;
+  &lt;/interface&gt;
+  &lt;interface name=&quot;public&quot;&gt;
+  &lt;inet-address value=&quot;${jboss.bind.address:10.66.140.184}&quot;/&gt;
+  &lt;/interface&gt;
+&lt;/interfaces&gt;
+</code></pre>
+
+<ul>
+<li>Generate the keystore, <a href="https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Fkeycloak.gitbooks.io%2Fdocumentation%2Fserver_installation%2Ftopics%2Fnetwork%2Fhttps.html">ref: HTTPS/SSL Setup | Keycloak Documentation</a></li>
+</ul>
+
+<pre><code>keytool -genkey -alias 10.66.146.84 -keyalg RSA -keystore keycloak.jks -validity 10950
+Enter keystore password:
+Re-enter new password:
+What is your first and last name?
+[Unknown]: Haoran Wang
+What is the name of your organizational unit?
+[Unknown]: RedHat
+What is the name of your organization?
+[Unknown]: OpenShift
+What is the name of your City or Locality?
+[Unknown]: BeiJing
+What is the name of your State or Province?
+[Unknown]: China
+What is the two-letter country code for this unit?
+[Unknown]: CN
+Is CN=Haoran Wang, OU=RedHat, O=OpenShift, L=BeiJing, ST=China, C=CN correct?
+[no]: yes
+Enter key password for &lt;10.66.146.84&gt;
+(RETURN if same as keystore password):
+Re-enter new password:
+</code></pre>
+
+<ul>
+<li>Generate the CSR:</li>
+</ul>
+
+<pre><code>keytool -certreq -alias 10.66.146.84 -keystore keycloak.jks &gt; keycloak.careq
+cat keycloak.careq
+-----BEGIN NEW CERTIFICATE REQUEST-----
+MIIC3zCCAccCAQAwajELMAkGA1UEBhMCQ04xDjAMBgNVBAgTBUNoaW5hMRAwDgYD
+VQQHEwdCZWlKaW5nMRIwEAYDVQQKEwlPcGVuU2hpZnQxDzANBgNVBAsTBlJlZEhh
+dDEUMBIGA1UEAxMLSGFvcmFuIFdhbmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQC/xFVWfd6hbNGCekOcqT5NyffmuPDP80jRNGYyrGgAYCi/on6p8QOJ
+qqeagLHLRAUYLrjNLJThGPlWiHlksV8WSRSP5s8Qtrg4JiZSIjMhYKMWAegIb/9d
+32BYXZSRO1GaFvaq4zj4XVt8122bX00XX6P2IglrID2nuEyaB+G+3jfMzUEIVXAp
+YJRII+eG0zN5Xt57Q+dSzTUYaWgw86EUpmcBGY/b8kp+PRhbFADzKYG/efgSP/Pp
+606NkX3COuIL0Z1sI/kp+GwnRLbACwCex5PeuhGArVhxcczUhYBQwDp1QLChJrfM
+ukDAxmhM8eG4QlZN+GWoWEGqFDQedEbtAgMBAAGgMDAuBgkqhkiG9w0BCQ4xITAf
+MB0GA1UdDgQWBBQO6RWqUO/AH/XwyQs9AC8g8PIpWTANBgkqhkiG9w0BAQsFAAOC
+AQEAWc8sQAigKoSp6h/Er/JY/kQGHbHyOuxmspgN4GJZUw8aGs1xejSDRmklx2G5
+U2TNTUqEfItrHaMDsOCE8AaX2oNTFbQwf2lQclJW4AJITv0EH0kLhotixqOlK+PK
++xREBNKRWU7gK+6LLzHGJq5KIcx9w1l5JWob71sXYc6rU8BzAfxve+EHjguYB+3k
+E3fGd/4iXz8wuvpK5o0ULy7zE1cc/vNthJ68ocqTEWCCN6risBCRc1GEwS2o5nnN
+tZvsvf1kXnrY5B/ezB0II+WN9VGqYhGYgvB2lEQtbggcJfo1Ki0ntWUkcti5TSIT
+B9B3utbCzTXc5Lv4kgT298Sx4g==
+-----END NEW CERTIFICATE REQUEST-----
+</code></pre>
+
+<ul>
+<li><p>Generate a private CA and import to keystore:</p>
+
+<pre><code>openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -subj &quot;/CN=$10.66.146.84&quot; -days 10000 -out ca.crt
+keytool -import -keystore keycloak.jks -file ca.crt -alias root
+</code></pre></li>
+
+<li><p>Sign the CSR and import the crt:</p>
+
+<pre><code>echo subjectAltName = IP:10.66.146.84 &gt; extfile.cnf
+openssl x509 -req -days 365 -in keycloak.careq -CA ca.crt -CAkey ca.key -CAcreateserial   -out server.crt -extfile extfile.cnf
+keytool -import -alias 10.66.146.84 -keystore keycloak.jks -file server.crt
+</code></pre></li>
+
+<li><p>Update the config file to use this keystore</p>
+
+<pre><code>#In the standalone or domain configuration file, search for the security-realms element and
+add(remember update the keystore-password):
+&lt;security-realm name=&quot;UndertowRealm&quot;&gt;
+&lt;server-identities&gt;
+&lt;ssl&gt;
+&lt;keystore path=&quot;keycloak.jks&quot; relative-to=&quot;jboss.server.config.dir&quot; keystore-password=&quot;secret&quot; /&gt;
+&lt;/ssl&gt;
+&lt;/server-identities&gt;
+&lt;/security-realm&gt;
+</code></pre>
+
+<pre><code>#Find the element server name=&quot;default-server&quot;
+(it?s a child element of subsystem xmlns=&quot;urn:jboss:domain:undertow:3.0&quot;) and add:
+&lt;subsystem xmlns=&quot;urn:jboss:domain:undertow:3.0&quot;&gt;
+&lt;buffer-cache name=&quot;default&quot;/&gt;
+&lt;server name=&quot;default-server&quot;&gt;
+&lt;https-listener name=&quot;https&quot; socket-binding=&quot;https&quot; security-realm=&quot;UndertowRealm&quot;/&gt;
+&lt;/subsystem&gt;
+</code></pre></li>
+
+<li><p>Startup the keycloak</p>
+
+<pre><code>./bin/standalone.sh
+</code></pre></li>
+</ul>
+
+<p>Then you can follow the guild to create some openid clients and users, groups
+<a href="https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Fkeycloak.gitbooks.io%2Fdocumentation%2Fserver_admin%2Findex.html">Server Administration | Keycloak Documentation </a></p>
+
+<p>Next update the openshift master config</p>
+
+<pre><code>identityProviders:
+- challenge: true
+login: true
+mappingMethod: claim
+name: keycloak_openid
+provider:
+apiVersion: v1
+kind: OpenIDIdentityProvider
+clientID: openshift
+clientSecret: 8922b2d1-0ab3-48c8-899b-56cb2c15f966
+ca: /root/ca.crt
+claims:
+id:
+- sub
+preferredUsername:
+- name
+name:
+- name
+email:
+- email
+extraScopes:
+- email
+- profile
+urls:
+authorize: https://${keycloak_server_ip}:8443/auth/realms/openshift/protocol/openid-connect/auth
+token: https://${keycloak_server_ip}:8443/auth/realms/openshift/protocol/openid-connect/token
+</code></pre>
+
+<p>Now you can open the openshift webconsole, you will see it will redirect you to the keycloak login page!</p>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'code-here', 'auto');
+    ga('send', 'pageview');
+    window.baseURL = "https:\/\/uptoknow.github.io\/";
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  
+  
+  <script src="https://uptoknow.github.io//js/App.js"></script>
+  
+</body>
+</html>
