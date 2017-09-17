@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="OpenShift with CoreOS Dex Openid Provider">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-09-15">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/">
+    <meta property="og:site_name" content="UPTOKNOW">
+    
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
+    <meta name="generator" content="Hugo 0.26" />
+    <title>OpenShift with CoreOS Dex Openid Provider &middot; UPTOKNOW</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://uptoknow.github.io/css/style.css">
+    
+    <link href="https://uptoknow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="UPTOKNOW" />
+    
+    
+    <link rel="icon" href="https://uptoknow.github.io/ico.ico" />
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://uptoknow.github.io/">UPTOKNOW</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://uptoknow.github.io/about">About</a></li>
+				
+					<li><a href="https://uptoknow.github.io/">Blog</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://uptoknow.github.io/">UPTOKNOW</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Haoran Wang BLOG</small>
+		
+		
+		
+			<img id="profile-pic" src="https://uptoknow.github.io//img/haowang_profile.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/wanghaoran1988"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/wanghaoran88"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://linkedin.com/haoranwang"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+
+			<a href="mailto:smarterhaoran@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://uptoknow.github.io/about">About</a>
+			
+				<a href="https://uptoknow.github.io/">Blog</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>OpenShift with CoreOS Dex Openid Provider</h1>
+	</header>
+
+	<article>
+		
+
+<h3 id="overview">Overview</h3>
+
+<p>Dex is an openid provider, opensourced by CoreOS,it can be integrated with k8s, and it also can be integrated with OpenShift,here I will write how to setup the openid provider with openshift.</p>
+
+<p>Dex is not a user management system like ldap,saml,etc. but acts as a portal to other identity providers, it has different connectors that can be used to connect to different user
+management system, when you login use user/pass through the portal page of dex, it will generate an ID token for you.Here I will introduce how openshift works with ldap + dex.
+In this doc, I assume you have an LDAP server setup that manage your users.</p>
+
+<h3 id="id-tokens">ID tokens</h3>
+
+<p>ID tokens are an OAuth2.0 extention introduced by OpenID Connect, ID tokens are <a href="https://jwt.io/">JSON Web Tokens</a>, signed by issuer, inject the user claims including username, groups, etc.
+You can find the standand claims <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">here</a>. So, when you login and get the token, openshift will know what you are by decoding the
+token and get the username, groups and so on.</p>
+
+<p><em>Note:</em> Untill now, openshift have not consume the groups decoded from the ID tokens, openshift have it&rsquo;s own <code>Groups</code> resource that define which user belong to this group, and we persistent this to etcd.
+but we are planning consume the groups info from the ID tokens.</p>
+
+<h3 id="setup-the-dex-openid-provider">Setup the dex Openid Provider</h3>
+
+<p>Steps:</p>
+
+<ul>
+<li>Clone the dex code and build the binary</li>
+</ul>
+
+<pre><code>git clone https://github.com/coreos/dex
+cd dex &amp;&amp; make
+</code></pre>
+
+<ul>
+<li>Generate certs for dex server</li>
+</ul>
+
+<pre><code>$openssl genrsa -out ca.key 2048
+$openssl req -x509 -new -nodes -key ca.key -subj &quot;/CN=${MASTER_IP}&quot; -days 10000 -out ca.crt
+$openssl genrsa -out server.key 2048
+$openssl req -new -key server.key -subj &quot;/CN=${MASTER_IP}&quot; -out server.csr
+$echo subjectAltName = IP:10.66.146.84 &gt; extfile.cnf
+$openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial   -out server.crt -extfile extfile.cnf
+$openssl x509  -noout -text -in ./server.crt
+</code></pre>
+
+<ul>
+<li>Update dex config, replace ${dex_server_ip} with your own server ip and ${openshift_master_ip} with your own openshift master ip
+and update your ldap server info corrding to your ldap setup.</li>
+</ul>
+
+<pre><code>cat examples/config-dev.yaml
+# The base path of dex and the external name of the OpenID Connect service.
+# This is the canonical URL that all clients MUST use to refer to dex. If a
+# path is provided, dex's HTTP service will listen at a non-root URL.
+issuer: https://${dex_server_ip}:5554/dex
+
+# The storage configuration determines where dex stores its state. Supported
+# options include SQL flavors and Kubernetes third party resources.
+#
+# See the storage document at Documentation/storage.md for further information.
+storage:
+ type: sqlite3
+ config:
+   file: examples/dex.db
+
+# Configuration for the HTTP endpoints.
+web:
+ #http: 0.0.0.0:5556
+ # Uncomment for HTTPS options.
+ https: ${dex_server_ip}:5554
+ tlsCert: /etc/dex/server.crt
+ tlsKey: /etc/dex/server.key
+
+# Uncomment this block to enable the gRPC API. This values MUST be different
+# from the HTTP endpoints.
+# grpc:
+#   addr: 127.0.0.1:5557
+#  tlsCert: examples/grpc-client/server.crt
+#  tlsKey: examples/grpc-client/server.key
+#  tlsClientCA: /etc/dex/client.crt
+
+# Uncomment this block to enable configuration for the expiration time durations.
+# expiry:
+#   signingKeys: &quot;6h&quot;
+#   idTokens: &quot;24h&quot;
+
+# Options for controlling the logger.
+logger:
+ level: &quot;debug&quot;
+ format: &quot;text&quot; # can also be &quot;json&quot;
+
+# Uncomment this block to control which response types dex supports. For example
+# the following response types enable the implicit flow for web-only clients.
+# Defaults to [&quot;code&quot;], the code flow.
+# oauth2:
+#   responseTypes: [&quot;code&quot;, &quot;token&quot;, &quot;id_token&quot;]
+
+# Instead of reading from an external storage, use this list of clients.
+#
+# If this option isn't chosen clients may be added through the gRPC API.
+staticClients:
+- id: openshift
+ redirectURIs:
+         - 'https://${openshift_master_ip}:8443/oauth2callback/dex_openid'
+ name: 'openshift'
+ secret: ZXhhbXBsZS1hcHAtc2VjcmV0
+
+connectors:
+- type: ldap
+ id: ldap
+ name: LDAP
+ config:
+   insecureNoSSL: true
+   insecureSkipVerify: true
+   host: ${ldap_server_ip}
+   bindDN: &quot;CN=Administrator,CN=Users,DC=ad-example,DC=com&quot;
+   bindPW: ${ldap_server_pass}
+   userSearch:
+     baseDN: cn=users,dc=ad-example,dc=com
+     username: uid
+     idAttr: distinguishedName
+     emailAttr: mail
+     nameAttr: cn
+   groupSearch:
+     baseDN: ou=groups,dc=ad-example,dc=com
+     userAttr: DN
+     groupAttr: member
+     nameAttr: name
+</code></pre>
+
+<ul>
+<li>Startup dex with https enabled</li>
+</ul>
+
+<pre><code>./dex serve examples/config.yaml
+</code></pre>
+
+<ul>
+<li>Verify your dex are setup correctly
+Dex write a simple to that you can use to perform the login action and gain the id token an print it in the page.
+Startup it like this:</li>
+</ul>
+
+<pre><code>./bin/example-app --issuer https://${dex_server_ip}:5554/dex --issuer-root-ca /etc/dex/ca.crt --listen http://${dex_server_ip}:5555 --client-id example-app --client-secret ZXhhbXBsZS1hcHAtc2VjcmV0 --redirect-uri http://${dex_server_ip}:5555/callback
+</code></pre>
+
+<p>then you can open the <a href="http://${dex_server_ip}:5555">link</a>, and perform login action to check whether you have correct setup the dex with your own ldap server.</p>
+
+<ul>
+<li>Update openshift master config</li>
+</ul>
+
+<pre><code> identityProviders:
+ - challenge: true
+   login: true
+   mappingMethod: claim
+   name: dex_openid
+   provider:
+     apiVersion: v1
+     kind: OpenIDIdentityProvider
+     clientID: openshift
+     clientSecret: ZXhhbXBsZS1hcHAtc2VjcmV0
+     ca: /root/dex/ca.crt
+     claims:
+       id:
+       - sub
+       preferredUsername:
+       - name
+       name:
+       - name
+       email:
+       - email
+     extraScopes:
+     - email
+     - profile
+     urls:
+       authorize: https://${dex_server_ip}:5554/dex/auth
+       token: https://${dex_server_ip}:5554/dex/token
+</code></pre>
+
+<p>Finaly, restart the openshift master, then when you open your openshift login page, it will dirrect you to the dex login page, any problem, please contact <a href="mailto:smarterhaoran@gmail.com">me</a>.</p>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'code-here', 'auto');
+    ga('send', 'pageview');
+    window.baseURL = "https:\/\/uptoknow.github.io\/";
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  
+  
+  <script src="https://uptoknow.github.io//js/App.js"></script>
+  
+</body>
+</html>

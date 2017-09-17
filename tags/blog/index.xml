@@ -6,10 +6,20 @@
     <description>Recent content in Blog on UPTOKNOW</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 14 Sep 2017 18:28:15 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Sep 2017 20:00:08 +0800</lastBuildDate>
     
 	<atom:link href="https://uptoknow.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>OpenShift with CoreOS Dex Openid Provider</title>
+      <link>https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/</link>
+      <pubDate>Fri, 15 Sep 2017 20:00:08 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/</guid>
+      <description>Overview Dex is an openid provider, opensourced by CoreOS,it can be integrated with k8s, and it also can be integrated with OpenShift,here I will write how to setup the openid provider with openshift.
+Dex is not a user management system like ldap,saml,etc. but acts as a portal to other identity providers, it has different connectors that can be used to connect to different user management system, when you login use user/pass through the portal page of dex, it will generate an ID token for you.</description>
+    </item>
     
     <item>
       <title>Openshift Keycloak Openid</title>
