@@ -6,10 +6,20 @@
     <description>Recent content in Uptoknow on UPTOKNOW</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 15 Sep 2017 20:00:08 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 22 Sep 2017 16:42:11 +0800</lastBuildDate>
     
 	<atom:link href="https://uptoknow.github.io/tags/uptoknow/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Understand Json Patch</title>
+      <link>https://uptoknow.github.io/post/json-patch/</link>
+      <pubDate>Fri, 22 Sep 2017 16:42:11 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/json-patch/</guid>
+      <description>When we update an resource using the API, we generially will first get the resource, and then update it, and put back the entire object, this can waste bandwidth and processtime for large resources. Another choice is we can use HTTP PATCH to send an json patch to the api server.
+There are two kinds of patch you can use, JSON PATCH and JSON Merge Patch. Both have cons and pros.</description>
+    </item>
     
     <item>
       <title>OpenShift with CoreOS Dex Openid Provider</title>

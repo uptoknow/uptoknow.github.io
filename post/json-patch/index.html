@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Understand Json Patch">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-09-22">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://uptoknow.github.io/post/json-patch/">
+    <meta property="og:site_name" content="UPTOKNOW">
+    
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
+    <meta property="og:tags" content="json patch">
+    
+    <meta name="generator" content="Hugo 0.26" />
+    <title>Understand Json Patch &middot; UPTOKNOW</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://uptoknow.github.io/css/style.css">
+    
+    <link href="https://uptoknow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="UPTOKNOW" />
+    
+    
+    <link rel="icon" href="https://uptoknow.github.io/ico.ico" />
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://uptoknow.github.io/">UPTOKNOW</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://uptoknow.github.io/about">About</a></li>
+				
+					<li><a href="https://uptoknow.github.io/">Blog</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://uptoknow.github.io/">UPTOKNOW</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Haoran Wang BLOG</small>
+		
+		
+		
+			<img id="profile-pic" src="https://uptoknow.github.io//img/haowang_profile.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/wanghaoran1988"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/wanghaoran88"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://linkedin.com/haoranwang"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+
+			<a href="mailto:smarterhaoran@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://uptoknow.github.io/about">About</a>
+			
+				<a href="https://uptoknow.github.io/">Blog</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Understand Json Patch</h1>
+	</header>
+
+	<article>
+		
+
+<p>When we update an resource using the API, we generially will first get the resource, and then update it, and put back the entire object, this can waste bandwidth and processtime for large resources. Another choice is we can use <a href="https://tools.ietf.org/html/rfc5789">HTTP PATCH</a> to send an json patch to the api server.</p>
+
+<p>There are two kinds of patch you can use, <a href="https://tools.ietf.org/html/rfc6902">JSON PATCH</a> and <a href="https://tools.ietf.org/html/rfc7386">JSON Merge Patch</a>. Both have cons and pros.</p>
+
+<h1 id="json-patch">JSON Patch</h1>
+
+<p>The JSOn Patch format is similar to a database transaction: it is an array of mutating operations on a JSON object, and will be executed automically by a proper implementation. It is a series of &ldquo;add&rdquo;, &ldquo;remove&rdquo;, &ldquo;copy&rdquo; operations.</p>
+
+<p>Here is an JSON exmaple:</p>
+
+<pre><code>{
+	&quot;users&quot; : [
+		{ &quot;name&quot; : &quot;haoran&quot; , &quot;email&quot; : &quot;smarterhaoran@gmail.com&quot; },
+		{ &quot;name&quot; : &quot;foo&quot; , &quot;email&quot; : &quot;foo@example.org&quot; }
+	]
+}
+</code></pre>
+
+<p>If we want to change the email of user &ldquo;haoran&rdquo; to &ldquo;uptoknow@gmail.com&rdquo;, we can sent a patch to the api server with body:</p>
+
+<pre><code>[
+	{
+		&quot;op&quot; : &quot;replace&quot; ,
+		&quot;path&quot; : &quot;/users/0/email&quot; ,
+		&quot;value&quot; : &quot;uptoknow@gmail.com&quot;
+	}
+]
+</code></pre>
+
+<p>we need remember using the header json-patch+json when you sent the request:</p>
+
+<pre><code>curl -X PATCH -H &quot;Content-Type: application/json-patch+json&quot; \
+-D '[{&quot;op&quot;:&quot;replace&quot;,&quot;path&quot;:&quot;/users/0/email&quot;,&quot;value&quot;:&quot;uptoknow@gmail.com&quot;}]' http://&lt;server_ip&gt;/api
+</code></pre>
+
+<h1 id="json-merge-patch">JSON Merge Patch</h1>
+
+<p>Alongside JSON Patch there is an other JSON-based format, <a href="https://tools.ietf.org/html/rfc7386">JSON Merge Patch - RFC 7386</a> , which can be used more or less for the same purpose, ie. it describes a changed version of a JSON document. The conceptual difference compared to JSON Patch is that JSON Merge Patch is similar to a diff file. It simply contains the nodes of the document which should be different after execution.</p>
+
+<p>As a quick example (taken from the spec) if we have the following document:</p>
+
+<pre><code>{
+	&quot;a&quot;: &quot;b&quot;,
+	&quot;c&quot;: {
+		&quot;d&quot;: &quot;e&quot;,
+		&quot;f&quot;: &quot;g&quot;
+	}
+}
+</code></pre>
+
+<p>Then we can run the following patch on it:</p>
+
+<p>{
+    &ldquo;a&rdquo;:&ldquo;z&rdquo;,
+    &ldquo;c&rdquo;: {
+        &ldquo;f&rdquo;: null
+    }
+}</p>
+
+<p>which will change the value of &ldquo;a&rdquo; to &ldquo;z&rdquo; and will delete the &ldquo;f&rdquo; key.</p>
+
+<p>The simplicity of the format may look first promising at the first glance, since most probably anyone understanding the schema of the original document will also instantly understand a merge patch document too. It is just a standardization of one may naturally call a patch of a JSON document.</p>
+
+<p>But this simplicity comes with some limitations:</p>
+
+<ul>
+<li>Deletion happens by setting a key to null. This inherently means that it isn?t possible to change a key?s value to null, since such modification cannot be described by a merge patch document.</li>
+<li>Arrays cannot be manipulated by merge patches. If you want to add an element to an array, or mutate any of its elements then you have to include the entire array in the merge patch document, even if the actually changed parts is minimal.</li>
+<li>the execution of a merge patch document never results in error. Any malformed patch will be merged, so it is a very liberal format. It is not necessarily good, since you will probably need to perform programmatic check after merge, or run a JSON Schema validation after the merge.</li>
+</ul>
+
+<h1 id="summary">Summary</h1>
+
+<p>JSON Merge Patch is a naively simple format, with limited usability. Probably it is a good choice if you are building something small, with very simple JSON Schema, but you want offer a quickly understandable, more or less working method for clients to update JSON documents. A REST API designed for public consumption but without appropriate client libraries might be a good example.</p>
+
+<p>For more complex usecases I?d pick JSON Patch, since it is applicable to any JSON documents (unline merge patch, which is not able to set keys to null). The specification also ensures atomic execution and robust error reporting.</p>
+
+<p>Original ref link: <a href="http://erosb.github.io/post/json-patch-vs-merge-patch/">http://erosb.github.io/post/json-patch-vs-merge-patch/</a></p>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'code-here', 'auto');
+    ga('send', 'pageview');
+    window.baseURL = "https:\/\/uptoknow.github.io\/";
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  
+  
+  <script src="https://uptoknow.github.io//js/App.js"></script>
+  
+</body>
+</html>

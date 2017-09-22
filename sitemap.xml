@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://uptoknow.github.io/post/json-patch/</loc>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/</loc>
     <lastmod>2017-09-15T20:00:08+08:00</lastmod>
   </url>
@@ -34,7 +39,13 @@
   
   <url>
     <loc>https://uptoknow.github.io/tags/blog/</loc>
-    <lastmod>2017-09-15T20:00:08+08:00</lastmod>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://uptoknow.github.io/tags/json-patch/</loc>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -52,13 +63,13 @@
   
   <url>
     <loc>https://uptoknow.github.io/post/</loc>
-    <lastmod>2017-09-15T20:00:08+08:00</lastmod>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://uptoknow.github.io/tags/</loc>
-    <lastmod>2017-09-15T20:00:08+08:00</lastmod>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -69,13 +80,13 @@
   
   <url>
     <loc>https://uptoknow.github.io/</loc>
-    <lastmod>2017-09-15T20:00:08+08:00</lastmod>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://uptoknow.github.io/tags/uptoknow/</loc>
-    <lastmod>2017-09-15T20:00:08+08:00</lastmod>
+    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
