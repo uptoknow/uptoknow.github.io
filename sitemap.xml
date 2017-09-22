@@ -44,6 +44,18 @@
   </url>
   
   <url>
+    <loc>https://uptoknow.github.io/tags/go/</loc>
+    <lastmod>2017-09-11T18:40:18+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://uptoknow.github.io/tags/golang/</loc>
+    <lastmod>2017-09-11T18:40:18+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://uptoknow.github.io/tags/json-patch/</loc>
     <lastmod>2017-09-22T16:42:11+08:00</lastmod>
     <priority>0</priority>

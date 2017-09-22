@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on UPTOKNOW</title>
+    <link>https://uptoknow.github.io/tags/golang/</link>
+    <description>Recent content in Golang on UPTOKNOW</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Sep 2017 18:40:18 +0800</lastBuildDate>
+    
+	<atom:link href="https://uptoknow.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Request Handling in Go</title>
+      <link>https://uptoknow.github.io/post/request-handling-in-go/</link>
+      <pubDate>Mon, 11 Sep 2017 18:40:18 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/request-handling-in-go/</guid>
+      <description>Http handlers Processing HTTP requests with Go is primarily about two things: ServeMuxes and Handlers.
+A ServeMux is essentially a HTTP request router (or multiplexor). It compares incoming requests against a list of predefined URL paths, and calls the associated handler for the path whenever a match is found.
+Handlers are responsible for writing response headers and bodies. Almost any object can be a handler, so long as it satisfies the http.</description>
+    </item>
+    
+  </channel>
+</rss>
