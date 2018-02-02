@@ -25,10 +25,10 @@ Good names A good name is:</description>
     
     <item>
       <title>Request Handling in Go</title>
-      <link>https://uptoknow.github.io/post/request-handling-in-go/</link>
+      <link>https://uptoknow.github.io/post/golang/request-handling-in-go/</link>
       <pubDate>Mon, 11 Sep 2017 18:40:18 +0800</pubDate>
       
-      <guid>https://uptoknow.github.io/post/request-handling-in-go/</guid>
+      <guid>https://uptoknow.github.io/post/golang/request-handling-in-go/</guid>
       <description>Http handlers Processing HTTP requests with Go is primarily about two things: ServeMuxes and Handlers.
 A ServeMux is essentially a HTTP request router (or multiplexor). It compares incoming requests against a list of predefined URL paths, and calls the associated handler for the path whenever a match is found.
 Handlers are responsible for writing response headers and bodies. Almost any object can be a handler, so long as it satisfies the http.</description>
