@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://uptoknow.github.io/post/golang/golang-names/</loc>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://uptoknow.github.io/post/json-patch/</loc>
     <lastmod>2017-09-22T16:42:11+08:00</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>https://uptoknow.github.io/tags/blog/</loc>
-    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -51,7 +56,7 @@
   
   <url>
     <loc>https://uptoknow.github.io/tags/golang/</loc>
-    <lastmod>2017-09-11T18:40:18+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -75,13 +80,13 @@
   
   <url>
     <loc>https://uptoknow.github.io/post/</loc>
-    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://uptoknow.github.io/tags/</loc>
-    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -92,13 +97,13 @@
   
   <url>
     <loc>https://uptoknow.github.io/</loc>
-    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://uptoknow.github.io/tags/uptoknow/</loc>
-    <lastmod>2017-09-22T16:42:11+08:00</lastmod>
+    <lastmod>2018-02-01T11:23:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   

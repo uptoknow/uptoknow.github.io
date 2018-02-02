@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Golang Names">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2018-02-01">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://uptoknow.github.io/post/golang/golang-names/">
+    <meta property="og:site_name" content="UPTOKNOW">
+    
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
+    <meta property="og:tags" content="golang">
+    
+    <meta name="generator" content="Hugo 0.30.2" />
+    <title>Golang Names &middot; UPTOKNOW</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://uptoknow.github.io/css/style.css">
+    
+    <link href="https://uptoknow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="UPTOKNOW" />
+    
+    
+    <link rel="icon" href="https://uptoknow.github.io/ico.ico" />
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://uptoknow.github.io/">UPTOKNOW</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://uptoknow.github.io/about">About</a></li>
+				
+					<li><a href="https://uptoknow.github.io/">Blog</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://uptoknow.github.io/">UPTOKNOW</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Haoran Wang BLOG</small>
+		
+		
+		
+			<img id="profile-pic" src="https://uptoknow.github.io//img/haowang_profile.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/wanghaoran1988"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/wanghaoran88"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://linkedin.com/haoranwang"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+
+			<a href="mailto:smarterhaoran@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://uptoknow.github.io/about">About</a>
+			
+				<a href="https://uptoknow.github.io/">Blog</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Golang Names</h1>
+	</header>
+
+	<article>
+		
+
+<h3 id="what-s-names">What&rsquo;s Names</h3>
+
+<p>You cannot give a variable a name the way you give a dog a name-because it’s cute or it has good sound.</p>
+
+<p>The most important consideration in naming a variable is that the name fully and accurately describe the entity the variable represents.</p>
+
+<h3 id="names-matter">Names matter</h3>
+
+<p>Readability is the defining quality of good code.
+Good names are critical to readability.
+This talk is about naming in Go.</p>
+
+<h3 id="good-names">Good names</h3>
+
+<p>A good name is:</p>
+
+<ul>
+<li><p>Consistent (easy to guess)</p></li>
+
+<li><p>Short (easy to type)</p></li>
+
+<li><p>Accurate (easy to understand)</p></li>
+</ul>
+
+<h3 id="a-rule-of-thumb">A rule of thumb</h3>
+
+<p>The greater the distance between a name&rsquo;s declaration and its uses,
+the longer the name should be.</p>
+
+<h3 id="use-mixedcase">Use MixedCase</h3>
+
+<ul>
+<li><p>Names in Go should use MixedCase.</p></li>
+
+<li><p>(Don&rsquo;t use names_with_underscores.)</p></li>
+
+<li><p>Acronyms should be all capitals, as in ServeHTTP and IDProcessor.</p></li>
+</ul>
+
+<h3 id="local-variables">Local variables</h3>
+
+<p>Keep them short; long names obscure what the code does.</p>
+
+<p>Common variable/type combinations may use really short names:</p>
+
+<ul>
+<li>Prefer i to index.</li>
+<li>Prefer r to reader</li>
+<li>Prefer b to buffer</li>
+</ul>
+
+<p>Avoid redundant names, given their context:</p>
+
+<ul>
+<li>Prefer count to runeCount inside a function named RuneCount.</li>
+<li>Prefer ok to keyInMap in the statement</li>
+</ul>
+
+<pre><code>v, ok := m[k]
+</code></pre>
+
+<p>Longer names may help in long functions, or functions with many local variables.
+(But often this just means you should refactor.)</p>
+
+<h4 id="bad">Bad:</h4>
+
+<pre><code class="language-golang">func RuneCount(buffer []byte) int {
+    runeCount := 0
+    for index := 0; index &lt; len(buffer); {
+        if buffer[index] &lt; RuneSelf {
+            index++
+        } else {
+            _, size := DecodeRune(buffer[index:])
+            index += size
+        }
+        runeCount++
+    }
+    return runeCount
+}
+</code></pre>
+
+<h4 id="good">Good:</h4>
+
+<pre><code class="language-golang">func RuneCount(b []byte) int {
+    count := 0
+    for i := 0; i &lt; len(b); {
+        if b[i] &lt; RuneSelf {
+            i++
+        } else {
+            _, n := DecodeRune(b[i:])
+            i += n
+        }
+        count++
+    }
+    return count
+}
+</code></pre>
+
+<h3 id="parameters">Parameters</h3>
+
+<p>Function parameters are like local variables,
+but they also serve as documentation.</p>
+
+<p>Where the types are descriptive, they should be short:</p>
+
+<pre><code>func AfterFunc(d Duration, f func()) *Timer
+
+func Escape(w io.Writer, s []byte)
+</code></pre>
+
+<p>Where the types are more ambiguous, the names may provide documentation:</p>
+
+<pre><code class="language-golang">func Unix(sec, nsec int64) Time
+
+func HasPrefix(s, prefix []byte) bool
+</code></pre>
+
+<h3 id="return-values">Return values</h3>
+
+<p>Return values on exported functions should only be named for documentation purposes.</p>
+
+<p>These are good examples of named return values:</p>
+
+<pre><code class="language-golang">func Copy(dst Writer, src Reader) (written int64, err error)
+
+func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error)
+</code></pre>
+
+<h3 id="receivers">Receivers</h3>
+
+<p>Receivers are a special kind of argument.</p>
+
+<p>By convention, they are one or two characters that reflect the receiver type,
+because they typically appear on almost every line:</p>
+
+<pre><code class="language-golang">func (b *Buffer) Read(p []byte) (n int, err error)
+
+func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request)
+
+func (r Rectangle) Size() Point
+</code></pre>
+
+<p>Receiver names should be consistent across a type&rsquo;s methods.
+(Don&rsquo;t use r in one method and rdr in another.)</p>
+
+<h3 id="exported-package-level-names">Exported package-level names</h3>
+
+<p>Exported names are qualified by their package names.
+Remember this when naming exported variables, constants, functions, and types.
+That&rsquo;s why we have bytes.Buffer and strings.Reader,
+not bytes.ByteBuffer and strings.StringReader.</p>
+
+<h3 id="interface-types">Interface Types</h3>
+
+<p>Interfaces that specify just one method are usually just that function name with &lsquo;er&rsquo; appended to it.</p>
+
+<pre><code class="language-golang">type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+</code></pre>
+
+<p>Sometimes the result isn&rsquo;t correct English, but we do it anyway:</p>
+
+<pre><code class="language-golang">type Execer interface {
+    Exec(query string, args []Value) (Result, error)
+}
+</code></pre>
+
+<p>Sometimes we use English to make it nicer:</p>
+
+<pre><code class="language-golang">type ByteReader interface {
+    ReadByte() (c byte, err error)
+}
+</code></pre>
+
+<p>When an interface includes multiple methods, choose a name that accurately describes its purpose (examples: net.Conn, http.ResponseWriter, io.ReadWriter).</p>
+
+<h3 id="errors">Errors</h3>
+
+<p>Error types should be of the form FooError:</p>
+
+<pre><code>type ExitError struct {
+    ...
+}
+</code></pre>
+
+<p>Error values should be of the form ErrFoo:</p>
+
+<pre><code>var ErrFormat = errors.New(&quot;image: unknown format&quot;)
+</code></pre>
+
+<h3 id="packages">Packages</h3>
+
+<p>Choose package names that lend meaning to the names they export.
+Steer clear of util, common, and the like.</p>
+
+<h3 id="packages-1">Packages</h3>
+
+<p>Choose package names that lend meaning to the names they export.
+Steer clear of util, common, and the like.</p>
+
+<h3 id="import-paths">Import paths</h3>
+
+<p>The last component of a package path should be the same as the package name.</p>
+
+<pre><code>&quot;compress/gzip&quot; // package gzip
+</code></pre>
+
+<p>Avoid stutter in repository and package paths:</p>
+
+<pre><code>&quot;code.google.com/p/goauth2/oauth2&quot; // bad; my fault
+</code></pre>
+
+<p>For libraries, it often works to put the package code in the repo root:</p>
+
+<pre><code>&quot;github.com/golang/oauth2&quot; // package oauth2
+</code></pre>
+
+<p>Also avoid upper case letters (not all file systems are case sensitive).</p>
+
+<h3 id="the-standard-library">The standard library</h3>
+
+<p>Many examples in this talk are from the standard library.
+The standard library is a great place to find good Go code.
+Look to it for inspiration.
+But be warned:
+When the standard library was written, we were still learning.
+Most of it we got right, but we made some mistakes.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Use short names.
+Think about context.
+Use your judgment.</p>
+
+<p>Copy paste from: <a href="https://talks.golang.org/2014/names.slide#1">Golang Names</a></p>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'code-here', 'auto');
+    ga('send', 'pageview');
+    window.baseURL = "https:\/\/uptoknow.github.io\/";
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  
+  
+  <script src="https://uptoknow.github.io//js/App.js"></script>
+  
+</body>
+</html>
