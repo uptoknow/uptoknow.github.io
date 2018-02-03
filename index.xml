@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>UPTOKNOW</title>
+    <title>Welcome to My Site</title>
     <link>https://uptoknow.github.io/</link>
-    <description>Recent content on UPTOKNOW</description>
+    <description>Recent content on Welcome to My Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 Feb 2018 01:14:39 +0800</lastBuildDate>
@@ -19,8 +19,7 @@
       <guid>https://uptoknow.github.io/post/golang/golang-learning-maturial/</guid>
       <description>This is the page that collect golang related learning materials
  Online free materials:
- Tour of Go: Very quickstart for learning Go. Go by example: Go by Example is a hands-on introduction to Go using annotated example programs Effective Golang: Golang programming conventions, every Gopher should get farmiliar with this. Wiki Page: This include really a lot that you needed, including blogs, books, etc.  Tools for Go:
- delve: A debugger tool.</description>
+ Tour of Go: Very quickstart for learning Go. Go by example: Go by Example is a hands-on introduction to Go using annotated example programs Effective Golang: Golang programming conventions, every Gopher should get farmiliar with this. Wiki Page: This include really a lot that you needed, including blogs, books, etc. Gopher talks: This is a site that contains the talks delivered from GopherCon  Tools for Go:</description>
     </item>
     
     <item>
