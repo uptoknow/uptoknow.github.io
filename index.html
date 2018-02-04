@@ -111,6 +111,41 @@
 	<div class="panel panel-default">
 	<div class="panel-header">
 		<h3>
+			<a href="https://uptoknow.github.io/post/golang/golang-interfaces/">Golang Interfaces</a>
+			<br>
+			<small>
+				4 February 2018
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		Interface make more sense when you make the code more flexible, scalable, and maintainable, interface in go is a different than other languages like java.
+ In java we need use implement to say that type implements an interface, in golang, Every type that implement an interface automatically satisfies that interface, it&rsquo;s automatically deteced by Go compiler.
+type I interface{ func M() } type Foo struct{} func (f *foo) M(){}  We declare an interface I that have an func M(), and the Foo struct have an M() func, so we can treat Foo is and implementation of interface I
+		
+			... <a href="https://uptoknow.github.io/post/golang/golang-interfaces/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/golang"><span class="label label-success">golang</span></a>
+			
+		</small>
+		
+	</div>
+</div>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
 			<a href="https://uptoknow.github.io/post/golang/golang-learning-maturial/">Golang Learning Materials</a>
 			<br>
 			<small>
@@ -240,43 +275,6 @@ Dex is not a user management system like ldap,saml,etc. but acts as a portal to 
 				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
 			
 				<a href="https://uptoknow.github.io/tags/openshift"><span class="label label-success">openshift</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://uptoknow.github.io/post/openshift-with-keycloak-openid/">Openshift Keycloak Openid</a>
-			<br>
-			<small>
-				14 September 2017
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		Keycloak is an powerful tools that can be used as openid provider and SAML auth provider, and here I will record how to integrate openshift with keycloak.
-First, download the keycloak from here
-Then, you neec setup the keycloak with https enabled, as openshift ask the openid provider to support https, see the openid spec here We will setup a standalone cluster and update the binding address, and we need generate the keystore for serve the https the standalone config file is at: standalone/configuration/standalone.
-		
-			... <a href="https://uptoknow.github.io/post/openshift-with-keycloak-openid/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/openshift"><span class="label label-success">openshift</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/keycloak"><span class="label label-success">keycloak</span></a>
 			
 		</small>
 		

@@ -6,10 +6,21 @@
     <description>Recent content in Blog on Welcome to My Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2018 01:14:39 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 04 Feb 2018 15:31:04 +0800</lastBuildDate>
     
 	<atom:link href="https://uptoknow.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang Interfaces</title>
+      <link>https://uptoknow.github.io/post/golang/golang-interfaces/</link>
+      <pubDate>Sun, 04 Feb 2018 15:31:04 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/golang/golang-interfaces/</guid>
+      <description>Interface make more sense when you make the code more flexible, scalable, and maintainable, interface in go is a different than other languages like java.
+ In java we need use implement to say that type implements an interface, in golang, Every type that implement an interface automatically satisfies that interface, it&amp;rsquo;s automatically deteced by Go compiler.
+type I interface{ func M() } type Foo struct{} func (f *foo) M(){}  We declare an interface I that have an func M(), and the Foo struct have an M() func, so we can treat Foo is and implementation of interface I</description>
+    </item>
     
     <item>
       <title>Golang Learning Materials</title>
