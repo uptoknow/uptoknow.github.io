@@ -4,16 +4,21 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <meta name="description" content="">
-    <meta property="og:title" content="Uptoknow">
+    <meta property="og:title" content="How we manage certs for openshift dedicated v4">
     
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-06-20">
     
     <meta property="og:description" content="">
-    <meta property="og:url" content="https://uptoknow.github.io/tags/uptoknow/">
+    <meta property="og:url" content="https://uptoknow.github.io/post/openshift-certs-management/">
     <meta property="og:site_name" content="Welcome to My Site">
     
+    <meta property="og:tags" content="blog">
+    
+    <meta property="og:tags" content="uptoknow">
+    
     <meta name="generator" content="Hugo 0.36-DEV" />
-    <title>Uptoknow &middot; Welcome to My Site</title>
+    <title>How we manage certs for openshift dedicated v4 &middot; Welcome to My Site</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -100,34 +105,62 @@
 			<div class="row">
 				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
 
-<article>
+<main>
 	<header>
-		<h1>Uptoknow</a></h1>
+		<h1>How we manage certs for openshift dedicated v4</h1>
 	</header>
+
+	<article>
+		
+
+<h3 id="overview">Overview</h3>
+
+<p>In OpenShift Dedicated V4, we use Let&rsquo;s Encrypt to sign the certs for OpenShift controle plane and Ingress router, we designed <a href="https://github.com/openshift/certman-operator">certman-operator</a> to manage the certs deployed inside the cluster, for more details you can see <a href="https://blog.openshift.com/using-kubernetes-operators-to-manage-lets-encrypt-ssl-tls-certificates-for-red-hat-openshift-dedicated/">Using Kubernetes Operators to Manage Let?s Encrypt SSL/TLS Certificates for Red Hat OpenShift Dedicated</a>, here I how the certs is applied to target cluster.</p>
+
+<h3 id="how-we-deploy-update-the-certs-to-clusters">How we deploy/update the certs to clusters</h3>
+
+<p>We manage v4 dedicated clusters using <a href="https://github.com/openshift/hive">hive</a>, it has a custom resource called <code>clusterdeployment</code> which defines everything about install a cluster, also includes the which certificates to use to secure the api.</p>
+
 <ul>
-	
-	<li><a href="https://uptoknow.github.io/post/openshift-certs-management/">How we manage certs for openshift dedicated v4</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/golang/golang-interfaces/">Golang Interfaces</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/golang/golang-learning-maturial/">Golang Learning Materials</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/golang/golang-names/">Golang Names</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/json-patch/">Understand Json Patch</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/">OpenShift with CoreOS Dex Openid Provider</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/openshift-with-keycloak-openid/">Openshift Keycloak Openid</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/golang/request-handling-in-go/">Request Handling in Go</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/k8s-auth-proxy-example/">K8s Auth Proxy Example</a></li>
-	
-	<li><a href="https://uptoknow.github.io/post/welcome/">Welcome to uptoknow!</a></li>
-	
+<li>when we create a cluster from cloud.openshift.com, a <code>clusterDeployment</code> object created, and with configuration settings about which secret is used to store the signed certs.</li>
+<li>certman-operator see new <code>clusterDeployment</code> created, then it try to request a signed certs following the ACME protocol.</li>
+<li>after that, the certs is stored inside the secret that defined in clusterDeployment</li>
+<li>hive operator will create a <a href="https://github.com/openshift/hive/blob/master/docs/syncset.md">syncset</a> that copy that secret to the target created cluster</li>
+<li>openshift v4 have a apiserver operator, and have an CRD called <code>apiservers.config.openshift.io</code>, the custom resource named <code>cluser</code> have the configuration settigs about which secret to use to apply to the cluster, you can run <code>oc get apiserver cluster -o yaml</code> to see the configurations.</li>
+<li>the apiserver operator is responsible for apply the certs to cluster,and when the secret is udpated, it will trigger a redeploy of the certs.</li>
+<li>when the certs are expiring, cetman-opeator will renew the certs, and update the secret in the cluster running hive.</li>
+<li>and the sysnset controller will copy the new certs to the target cluster, then the apiserver operator will apply the change.</li>
 </ul>
-</article>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://uptoknow.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "uptoknow-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
 
 						</div>
 					</div>

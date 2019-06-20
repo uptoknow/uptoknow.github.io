@@ -111,6 +111,38 @@
 	<div class="panel panel-default">
 	<div class="panel-header">
 		<h3>
+			<a href="https://uptoknow.github.io/post/openshift-certs-management/">How we manage certs for openshift dedicated v4</a>
+			<br>
+			<small>
+				20 June 2019
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		Overview In OpenShift Dedicated V4, we use Let&rsquo;s Encrypt to sign the certs for OpenShift controle plane and Ingress router, we designed certman-operator to manage the certs deployed inside the cluster, for more details you can see Using Kubernetes Operators to Manage Let?s Encrypt SSL/TLS Certificates for Red Hat OpenShift Dedicated, here I how the certs is applied to target cluster.
+How we deploy/update the certs to clusters We manage v4 dedicated clusters using hive, it has a custom resource called clusterdeployment which defines everything about install a cluster, also includes the which certificates to use to secure the api.
+		
+			... <a href="https://uptoknow.github.io/post/openshift-certs-management/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
+			
+		</small>
+		
+	</div>
+</div>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
 			<a href="https://uptoknow.github.io/post/golang/golang-interfaces/">Golang Interfaces</a>
 			<br>
 			<small>
@@ -241,40 +273,6 @@ There are two kinds of patch you can use, JSON PATCH and JSON Merge Patch. Both 
 				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
 			
 				<a href="https://uptoknow.github.io/tags/json-patch"><span class="label label-success">json patch</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/">OpenShift with CoreOS Dex Openid Provider</a>
-			<br>
-			<small>
-				15 September 2017
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		Overview Dex is an openid provider, opensourced by CoreOS,it can be integrated with k8s, and it also can be integrated with OpenShift,here I will write how to setup the openid provider with openshift.
-Dex is not a user management system like ldap,saml,etc. but acts as a portal to other identity providers, it has different connectors that can be used to connect to different user management system, when you login use user/pass through the portal page of dex, it will generate an ID token for you.
-		
-			... <a href="https://uptoknow.github.io/post/openshift-with-coreos-dex-openid-provider/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/openshift"><span class="label label-success">openshift</span></a>
 			
 		</small>
 		

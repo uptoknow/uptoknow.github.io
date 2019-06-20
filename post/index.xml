@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Welcome to My Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 04 Feb 2018 15:31:04 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jun 2019 14:35:56 +0800</lastBuildDate>
     
 	<atom:link href="https://uptoknow.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How we manage certs for openshift dedicated v4</title>
+      <link>https://uptoknow.github.io/post/openshift-certs-management/</link>
+      <pubDate>Thu, 20 Jun 2019 14:35:56 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/openshift-certs-management/</guid>
+      <description>Overview In OpenShift Dedicated V4, we use Let&amp;rsquo;s Encrypt to sign the certs for OpenShift controle plane and Ingress router, we designed certman-operator to manage the certs deployed inside the cluster, for more details you can see Using Kubernetes Operators to Manage Let?s Encrypt SSL/TLS Certificates for Red Hat OpenShift Dedicated, here I how the certs is applied to target cluster.
+How we deploy/update the certs to clusters We manage v4 dedicated clusters using hive, it has a custom resource called clusterdeployment which defines everything about install a cluster, also includes the which certificates to use to secure the api.</description>
+    </item>
     
     <item>
       <title>Golang Interfaces</title>
