@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shadowsockes on Welcome to My Site</title>
+    <link>https://uptoknow.github.io/tags/shadowsockes/</link>
+    <description>Recent content in Shadowsockes on Welcome to My Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Dec 2019 08:16:19 +0800</lastBuildDate>
+    
+	<atom:link href="https://uptoknow.github.io/tags/shadowsockes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup Http Proxy</title>
+      <link>https://uptoknow.github.io/post/setup-http-proxy/</link>
+      <pubDate>Thu, 19 Dec 2019 08:16:19 +0800</pubDate>
+      
+      <guid>https://uptoknow.github.io/post/setup-http-proxy/</guid>
+      <description>Recently, I spend some time working on setup a http proxy in synology nas server, it&amp;rsquo;s a little bit difficult firstly when I setup this first time, here I gonna write down how I setup a http proxy server.
+ First, you need get a virtual host that running the shadowsockes server, and start the shadownsocks server using docker:   docker run -e METHOD=aes-256-cfb -e PASSWORD=&amp;lt;password&amp;gt; -p 8388:8388 -p 8388:8388/udp -d shadowsocks/shadowsocks-libev   Then, on your laptop, run this to start up the proxy client:   docker run -u root -d -p 1080:1080 shadowsocks/shadowsocks-libev:latest ss-local -s &amp;lt;server_ip&amp;gt; -p 8388 -b 0.</description>
+    </item>
+    
+  </channel>
+</rss>

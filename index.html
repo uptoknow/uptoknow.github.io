@@ -111,6 +111,42 @@
 	<div class="panel panel-default">
 	<div class="panel-header">
 		<h3>
+			<a href="https://uptoknow.github.io/post/setup-http-proxy/">Setup Http Proxy</a>
+			<br>
+			<small>
+				19 December 2019
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		Recently, I spend some time working on setup a http proxy in synology nas server, it&rsquo;s a little bit difficult firstly when I setup this first time, here I gonna write down how I setup a http proxy server.
+ First, you need get a virtual host that running the shadowsockes server, and start the shadownsocks server using docker:   docker run -e METHOD=aes-256-cfb -e PASSWORD=&lt;password&gt; -p 8388:8388 -p 8388:8388/udp -d shadowsocks/shadowsocks-libev   Then, on your laptop, run this to start up the proxy client:   docker run -u root -d -p 1080:1080 shadowsocks/shadowsocks-libev:latest ss-local -s &lt;server_ip&gt; -p 8388 -b 0.
+		
+			... <a href="https://uptoknow.github.io/post/setup-http-proxy/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/shadowsockes"><span class="label label-success">shadowsockes</span></a>
+			
+				<a href="https://uptoknow.github.io/tags/gost"><span class="label label-success">gost</span></a>
+			
+		</small>
+		
+	</div>
+</div>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
 			<a href="https://uptoknow.github.io/post/openshift-certs-management/">How we manage certs for openshift dedicated v4</a>
 			<br>
 			<small>
@@ -246,40 +282,6 @@ Good names A good name is:
 </div>
 
 
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://uptoknow.github.io/post/json-patch/">Understand Json Patch</a>
-			<br>
-			<small>
-				22 September 2017
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		When we update an resource using the API, we generially will first get the resource, and then update it, and put back the entire object, this can waste bandwidth and processtime for large resources. Another choice is we can use HTTP PATCH to send an json patch to the api server.
-There are two kinds of patch you can use, JSON PATCH and JSON Merge Patch. Both have cons and pros.
-		
-			... <a href="https://uptoknow.github.io/post/json-patch/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://uptoknow.github.io/tags/blog"><span class="label label-success">blog</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/uptoknow"><span class="label label-success">uptoknow</span></a>
-			
-				<a href="https://uptoknow.github.io/tags/json-patch"><span class="label label-success">json patch</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
 
 <div class="text-center center-block">
 	
@@ -320,13 +322,25 @@ There are two kinds of patch you can use, JSON PATCH and JSON Merge Patch. Both 
     ><a href="/page/2/">2</a></li>
     
     
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
     <li
     >
     <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
     </li>
     
     <li>
-        <a href="/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/3/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
     </li>
     
 </ul>
